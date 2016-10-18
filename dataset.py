@@ -1,6 +1,7 @@
-import numpy as np
-import matplotlib.pyplot as plt
 import pickle
+
+import matplotlib.pyplot as plt
+import numpy as np
 from PIL import Image
 
 
@@ -88,7 +89,7 @@ def display_image():
     np.random.shuffle(image_indexes)
     width = 10
     height = 10
-    for i, image_index in enumerate(image_indexes[:width*height]):
+    for i, image_index in enumerate(image_indexes[:width * height]):
         plt.subplot(width, height, i + 1)
         plt.tick_params(labelbottom="off")
         plt.tick_params(labelleft="off")
