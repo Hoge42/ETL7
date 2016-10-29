@@ -19,14 +19,17 @@ def max_pool_2x2(x):
     return tf.nn.max_pool(x, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
 
 
-def le_net_conv_pool(input_image, filter_size, input_channel, output_channel):
+def le_net_conv_pool(input_image, input_channels, output_channels, conv_count, filter_size=3):
     """One Convolution-Layer and one Max-Pooling-Layer"""
-    with tf.name_scope('Convolution'):
-        W_conv = weight_variable([filter_size, filter_size, input_channel, output_channel], 'W_conv')
-        b_conv = bias_variable([output_channel], 'b_conv')
-        h_conv = tf.nn.relu(convert2d(input_image, W_conv) + b_conv)
+    output = input_image
+    for i in range(1, conv_count + 1):
+        with tf.name_scope('Convolution{}'.format(i)):
+            W_conv = weight_variable([filter_size, filter_size, input_channels, output_channels], 'W_conv{}'.format(i))
+            b_conv = bias_variable([output_channels], 'b_conv{}'.format(i))
+            output = tf.nn.relu(convert2d(output, W_conv) + b_conv)
+            input_channels = output_channels
     with tf.name_scope('MaxPool'):
-        h_pool = max_pool_2x2(h_conv)
+        h_pool = max_pool_2x2(output)
     return h_pool
 
 
